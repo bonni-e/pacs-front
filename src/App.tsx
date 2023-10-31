@@ -4,7 +4,7 @@ import 'styled-components';
 function App() {
   return (
     <div className="App">
-      <h1>Hello React world</h1>
+      <h1>Hello React world!</h1>
     </div>
   );
 }
