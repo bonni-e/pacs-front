@@ -33,7 +33,7 @@ export default function StudyList() {
     const [isLoading, setIsLoading] = useState(true);
     const [studies, setStudies] = useState([]);
     const fetchStudies = async() => {
-        const response = await fetch(`http://192.168.30.88:8080/v1/api/pacs/studies?page=${page}`);
+        const response = await fetch(`//192.168.30.88:8080/v1/api/pacs/studies?page=${page}`);
         const json = await response.json();
         setStudies(json);
         setIsLoading(false);
@@ -63,7 +63,7 @@ export default function StudyList() {
                     <CheckboxGroup>
                         {studies.map((study: IStudyProps) => (
                             <Tr key={study.studykey}>
-                                <Td><Checkbox value={study.patientkey}>{study.patientkey}</Checkbox></Td>
+                                <Td><Checkbox value={study.studykey} />{study.pid}</Td>
                                 <Td>{study.pname}</Td>
                                 <Td>{study.modality}</Td>
                                 <Td>{study.studydesc}</Td>
@@ -71,7 +71,7 @@ export default function StudyList() {
                                 <Td>{study.reportstatus}</Td>
                                 <Td>{study.seriescnt}</Td>
                                 <Td>{study.imagecnt}</Td>
-                                <Td>{study.verifyflag}</Td>
+                                <Td>{toStringReportStatus(study.reportstatus)}</Td>
                             </Tr>
                         ))}
                     </CheckboxGroup>
@@ -79,4 +79,17 @@ export default function StudyList() {
             </Table>
         </TableContainer >
     );
+}
+
+function toStringReportStatus(status:number) {
+    switch(status) {
+        case 3 :
+            return "읽지않음";
+        case 4 :
+            return "열람중";
+        case 5 :
+            return "예비판독";
+        case 6 :
+            return "판독";
+    }
 }
