@@ -11,8 +11,38 @@ import {
     Checkbox,
     CheckboxGroup
 } from '@chakra-ui/react'
+import { useEffect, useState } from 'react';
+
+interface IStudyProps {
+    "modality": string;
+    "imagecnt": number;
+    "studydate": string;
+    "studydesc": string;
+    "reportstatus": number;
+    "seriescnt": number;
+    "verifyflag": number;
+    "studykey": number;
+    "patientkey": string;
+    "pid": string;
+    "pname": string;
+}
 
 export default function StudyList() {
+    // Fetching
+    const [page, setPage] = useState(1);
+    const [isLoading, setIsLoading] = useState(true);
+    const [studies, setStudies] = useState([]);
+    const fetchStudies = async() => {
+        const response = await fetch(`http://192.168.30.88:8080/v1/api/pacs/studies?page=${page}`);
+        const json = await response.json();
+        setStudies(json);
+        setIsLoading(false);
+    }
+    useEffect(() => {
+        fetchStudies();
+        console.log(studies);
+    }, []);
+
     return (
         <TableContainer padding={'23px'}>
             <Table variant='striped' colorScheme='blue' fontSize={'sm'}>
@@ -32,28 +62,19 @@ export default function StudyList() {
                 </Thead>
                 <Tbody>
                     <CheckboxGroup>
-                        <Tr>
-                            <Td><Checkbox value='17192'>17192</Checkbox></Td>
-                            <Td>강감찬</Td>
-                            <Td>CT</Td>
-                            <Td>CT BRAIN</Td>
-                            <Td>20230319</Td>
-                            <Td>읽지않음</Td>
-                            <Td>7</Td>
-                            <Td>173</Td>
-                            <Td>아니오</Td>
-                        </Tr>
-                        <Tr>
-                            <Td><Checkbox value='12345'>12345</Checkbox></Td>
-                            <Td>강감찬</Td>
-                            <Td>CT</Td>
-                            <Td>CT BRAIN</Td>
-                            <Td>20230319</Td>
-                            <Td>읽지않음</Td>
-                            <Td>7</Td>
-                            <Td>173</Td>
-                            <Td>아니오</Td>
-                        </Tr>
+                        {studies.map((study: IStudyProps) => (
+                            <Tr>
+                                <Td><Checkbox value={study.patientkey}>{study.patientkey}</Checkbox></Td>
+                                <Td>{study.pname}</Td>
+                                <Td>{study.modality}</Td>
+                                <Td>{study.studydesc}</Td>
+                                <Td>{study.studydate}</Td>
+                                <Td>{study.reportstatus}</Td>
+                                <Td>{study.seriescnt}</Td>
+                                <Td>{study.imagecnt}</Td>
+                                <Td>{study.verifyflag}</Td>
+                            </Tr>
+                        ))}
                     </CheckboxGroup>
                 </Tbody>
             </Table>
