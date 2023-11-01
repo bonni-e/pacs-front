@@ -1,11 +1,17 @@
 import React from 'react';
 import 'styled-components';
+import Router from './Router';
+import { ChakraProvider } from '@chakra-ui/react';
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 function App() {
   return (
-    <div className="App">
-      <h1>Hello React world!</h1>
-    </div>
+    <ChakraProvider>
+      <Header />
+      <Router />
+      <Footer />
+    </ChakraProvider>
   );
 }
 
