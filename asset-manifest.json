@@ -1,15 +1,12 @@
 {
   "files": {
-    "main.css": "/pacs-front/static/css/main.90f6920e.css",
-    "main.js": "/pacs-front/static/js/main.b3c67e8f.js",
+    "main.js": "/pacs-front/static/js/main.7edc6d37.js",
     "static/js/787.71df535f.chunk.js": "/pacs-front/static/js/787.71df535f.chunk.js",
     "index.html": "/pacs-front/index.html",
-    "main.90f6920e.css.map": "/pacs-front/static/css/main.90f6920e.css.map",
-    "main.b3c67e8f.js.map": "/pacs-front/static/js/main.b3c67e8f.js.map",
+    "main.7edc6d37.js.map": "/pacs-front/static/js/main.7edc6d37.js.map",
     "787.71df535f.chunk.js.map": "/pacs-front/static/js/787.71df535f.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.90f6920e.css",
-    "static/js/main.b3c67e8f.js"
+    "static/js/main.7edc6d37.js"
   ]
 }
