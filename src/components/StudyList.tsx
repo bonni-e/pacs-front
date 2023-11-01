@@ -40,7 +40,6 @@ export default function StudyList() {
     }
     useEffect(() => {
         fetchStudies();
-        console.log(studies);
     }, []);
 
     return (
@@ -63,7 +62,7 @@ export default function StudyList() {
                 <Tbody>
                     <CheckboxGroup>
                         {studies.map((study: IStudyProps) => (
-                            <Tr>
+                            <Tr key={study.studykey}>
                                 <Td><Checkbox value={study.patientkey}>{study.patientkey}</Checkbox></Td>
                                 <Td>{study.pname}</Td>
                                 <Td>{study.modality}</Td>
