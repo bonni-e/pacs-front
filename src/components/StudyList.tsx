@@ -33,7 +33,7 @@ export default function StudyList() {
     const [isLoading, setIsLoading] = useState(true);
     const [studies, setStudies] = useState([]);
     const fetchStudies = async() => {
-        const response = await fetch(`//192.168.30.88:8080/v1/api/pacs/studies?page=${page}`);
+        const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/studies?page=${page}`);
         const json = await response.json();
         setStudies(json);
         setIsLoading(false);
