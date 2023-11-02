@@ -55,7 +55,7 @@ export default function StudyPreviousList({pid, pname}:IPreviousProps) {
                     </Thead>
                     <Tbody>
                         {studies.map((study:IStudyProps) => (
-                            <Tr>
+                            <Tr key={study.studykey}>
                                 <Td>{study.modality}</Td>
                                 <Td>{study.studydesc}</Td>
                                 <Td>{study.studydate}</Td>
