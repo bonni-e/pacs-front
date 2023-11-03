@@ -9,14 +9,10 @@ import {
     TableContainer,
     Checkbox,
     CheckboxGroup,
-    Center,
     Tfoot,
-    HStack,
-    IconButton,
 } from '@chakra-ui/react'
-import { useEffect, useState } from 'react';
 import StudyPreviousModal from './StudyPreviousModal';
-import { FcNext, FcPrevious } from 'react-icons/fc';
+
 
 let pageSize = 5;
 
@@ -39,19 +35,6 @@ interface IStudyList {
 }
 
 export default function StudyList({studies} : IStudyList) {
-    // Fetching
-    // const [isLoading, setIsLoading] = useState(true);
-    // const [studies, setStudies] = useState([]);
-    // const fetchStudies = async () => {
-    //     const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/studies?page=${page}&pageSize=${pageSize}`, {method:'POST'});
-    //     const json = await response.json();
-    //     setStudies(json);
-    //     setIsLoading(false);
-    // }
-    // useEffect(() => {
-    //     fetchStudies();
-    // }, []);
-
     return (
         <>
             <TableContainer padding={'23px'}>
@@ -87,18 +70,6 @@ export default function StudyList({studies} : IStudyList) {
                             ))}
                         </CheckboxGroup>
                     </Tbody>
-                    <Tfoot>
-                        <Tr>
-                            <Th colSpan={9}>
-                                <Center mt={'10px'}>
-                                    <HStack>
-                                        <IconButton aria-label='Previous Page' icon={<FcPrevious />} />
-                                        <IconButton aria-label='Next Page' icon={<FcNext />} />
-                                    </HStack>                                 
-                                </Center>
-                            </Th>
-                        </Tr>
-                    </Tfoot>
                 </Table>
             </TableContainer >
         </>
