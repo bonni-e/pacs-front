@@ -2,8 +2,8 @@ import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, 
 import StudyPreviousList from "./StudyPreviousList";
 
 export interface IPreviousProps {
-    pname: string;
-    pid: string;
+    "pname": string;
+    "pid": string;
 }
 
 export default function StudyPreviousModal({ pname, pid }: IPreviousProps) {
