@@ -1,6 +1,7 @@
-import { Box, Center, Divider, HStack, Input, Select, Tag, TagLabel } from "@chakra-ui/react";
+import { Box, Center, Divider, HStack, IconButton, Input, Select, Tag, TagLabel } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import StudyList from "./StudyList";
+import { FcNext, FcPrevious } from 'react-icons/fc';
 
 export default function SearchBar() {
     const [page, setPage] = useState(1);
@@ -62,6 +63,12 @@ export default function SearchBar() {
                 </HStack>
             </Box>
             <StudyList studies={studies} />
+            <Center mt={'10px'}>
+                <HStack>
+                    <IconButton aria-label='Previous Page' icon={<FcPrevious />} />
+                    <IconButton aria-label='Next Page' icon={<FcNext />} />
+                </HStack>
+            </Center>
         </>
     );
 }
