@@ -9,7 +9,6 @@ function Home() {
     return (
         <>
             <SearchBar />
-            <StudyList />
             <Divider />
         </>
     );

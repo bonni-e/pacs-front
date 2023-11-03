@@ -1,8 +1,22 @@
-import { Box, Center, Divider, HStack, Input, Select, Tag, TagLabel, TagLeftIcon } from "@chakra-ui/react";
-import { m } from "framer-motion";
+import { Box, Center, Divider, EventListenerEnv, HStack, Input, Select, Tag, TagLabel } from "@chakra-ui/react";
+import { useState } from "react";
+import StudyList from "./StudyList";
 
 export default function SearchBar() {
+    const [pageSize, setPageSize] = useState(5);
+
+    function changePage(e:React.ChangeEvent<HTMLSelectElement>) {
+        setPageSize(parseInt(e.target.value));
+        console.log('changed');
+        console.log('pageSize : ', pageSize);
+
+        return (
+            <StudyList page={1} pageSize={pageSize} />
+        );
+    }
+
     return (
+        <>
         <Box margin={'23px'}>
             <HStack >
                 <Input variant={'filled'} placeholder="환자아이디" />
@@ -29,12 +43,14 @@ export default function SearchBar() {
                         <TagLabel>{tagName}</TagLabel>
                     </Tag>
                 ))}
-                <Select name='pagesize' w='10%' h={'32px'} borderColor={"blackAlpha.500"} color={"blackAlpha.900"} minW={'100px'}>
-                    <option value={'5'} defaultChecked>5개씩 보기</option>
+                    <Select defaultValue={'5'} onChange={changePage} name='pagesize' w='10%' h={'32px'} borderColor={"blackAlpha.500"} color={"blackAlpha.900"} minW={'100px'}>
+                    <option value={'5'}>5개씩 보기</option>
                     <option value={'10'}>10개씩 보기</option>
                     <option value={'20'}>20개씩 보기</option>
                 </Select>
             </HStack>
         </Box>
+        <StudyList page={1} pageSize={pageSize}/>
+        </>
     );
 }
