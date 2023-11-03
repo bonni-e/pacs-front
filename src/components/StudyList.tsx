@@ -9,10 +9,16 @@ import {
     TableContainer,
     Checkbox,
     CheckboxGroup,
-    Button,
+    Center,
+    Tfoot,
+    HStack,
+    IconButton,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react';
 import StudyPreviousModal from './StudyPreviousModal';
+import { FcNext, FcPrevious } from 'react-icons/fc';
+
+let pageSize = 5;
 
 export interface IStudyProps {
     "modality": string;
@@ -28,13 +34,17 @@ export interface IStudyProps {
     "pname": string;
 }
 
-export default function StudyList() {
+interface IStudyList {
+    "page": number;
+    "pageSize": number;
+}
+
+export default function StudyList({page, pageSize} : IStudyList) {
     // Fetching
-    const [page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
     const [studies, setStudies] = useState([]);
     const fetchStudies = async () => {
-        const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/studies?page=${page}`);
+        const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/studies?page=${page}&pageSize=${pageSize}`, {method:'POST'});
         const json = await response.json();
         setStudies(json);
         setIsLoading(false);
@@ -70,14 +80,26 @@ export default function StudyList() {
                                     <Td>{study.modality}</Td>
                                     <Td>{study.studydesc}</Td>
                                     <Td>{study.studydate}</Td>
-                                    <Td>{study.reportstatus}</Td>
+                                    <Td>{toStringReportStatus(study.reportstatus)}</Td>
                                     <Td>{study.seriescnt}</Td>
                                     <Td>{study.imagecnt}</Td>
-                                    <Td>{toStringReportStatus(study.reportstatus)}</Td>
+                                    <Td>{study.verifyflag}</Td>
                                 </Tr>
                             ))}
                         </CheckboxGroup>
                     </Tbody>
+                    <Tfoot>
+                        <Tr>
+                            <Th colSpan={9}>
+                                <Center mt={'10px'}>
+                                    <HStack>
+                                        <IconButton aria-label='Previous Page' icon={<FcPrevious />} />
+                                        <IconButton aria-label='Next Page' icon={<FcNext />} />
+                                    </HStack>                                 
+                                </Center>
+                            </Th>
+                        </Tr>
+                    </Tfoot>
                 </Table>
             </TableContainer >
         </>
