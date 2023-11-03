@@ -1,56 +1,67 @@
-import { Box, Center, Divider, EventListenerEnv, HStack, Input, Select, Tag, TagLabel } from "@chakra-ui/react";
-import { useState } from "react";
+import { Box, Center, Divider, HStack, Input, Select, Tag, TagLabel } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import StudyList from "./StudyList";
 
 export default function SearchBar() {
+    const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(5);
 
-    function changePage(e:React.ChangeEvent<HTMLSelectElement>) {
-        setPageSize(parseInt(e.target.value));
-        console.log('changed');
-        console.log('pageSize : ', pageSize);
+    // Fetching
+    const [isLoading, setIsLoading] = useState(true);
+    const [studies, setStudies] = useState([]);
+    const fetchStudies = async () => {
+        const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/studies?page=${page}&pageSize=${pageSize}`, { method: 'POST' });
+        const json = await response.json();
+        setStudies(json);
+        setIsLoading(false);
+    }
+    useEffect(() => {
+        fetchStudies();
+    }, [page, pageSize]);
 
-        return (
-            <StudyList page={1} pageSize={pageSize} />
-        );
+    function changePageSize(e: React.ChangeEvent<HTMLSelectElement>) {
+        const page = parseInt(e.target.value);
+        console.log('page : ', page);
+        setPageSize(page);
+        fetchStudies();
     }
 
     return (
         <>
-        <Box margin={'23px'}>
-            <HStack >
-                <Input variant={'filled'} placeholder="환자아이디" />
-                <Input variant={'filled'} placeholder="환자이름" />
-                <Select variant={'filled'}>
-                    <option value={''} selected disabled>판독상태</option>
-                    <option value={'3'} >읽지않음</option>
-                    <option value={'4'} >열람중</option>
-                    <option value={'5'} >예비판독</option>
-                    <option value={'6'} >판독</option>
-                </Select>
-            </HStack>
-            <HStack mt={'20px'} justifyContent={'center'}>
-                {['전체', '1일', '3일', '1주일', '재설정'].map((tagName) => (
-                    <Tag size={'lg'} key={tagName} variant='outline' colorScheme='blackAlpha'>
-                        <TagLabel>{tagName}</TagLabel>
-                    </Tag>
-                ))}
-                <Center height='30px' margin={'0 15px 0 15px'}>
-                    <Divider orientation='vertical' />
-                </Center>
-                {['다운로드', '검사삭제'].map((tagName) => (
-                    <Tag size={'lg'} key={tagName} variant='outline' colorScheme='blackAlpha'>
-                        <TagLabel>{tagName}</TagLabel>
-                    </Tag>
-                ))}
-                    <Select defaultValue={'5'} onChange={changePage} name='pagesize' w='10%' h={'32px'} borderColor={"blackAlpha.500"} color={"blackAlpha.900"} minW={'100px'}>
-                    <option value={'5'}>5개씩 보기</option>
-                    <option value={'10'}>10개씩 보기</option>
-                    <option value={'20'}>20개씩 보기</option>
-                </Select>
-            </HStack>
-        </Box>
-        <StudyList page={1} pageSize={pageSize}/>
+            <Box margin={'23px'}>
+                <HStack >
+                    <Input variant={'filled'} placeholder="환자아이디" />
+                    <Input variant={'filled'} placeholder="환자이름" />
+                    <Select variant={'filled'}>
+                        <option value={''} selected disabled>판독상태</option>
+                        <option value={'3'} >읽지않음</option>
+                        <option value={'4'} >열람중</option>
+                        <option value={'5'} >예비판독</option>
+                        <option value={'6'} >판독</option>
+                    </Select>
+                </HStack>
+                <HStack mt={'20px'} justifyContent={'center'}>
+                    {['전체', '1일', '3일', '1주일', '재설정'].map((tagName) => (
+                        <Tag size={'lg'} key={tagName} variant='outline' colorScheme='blackAlpha'>
+                            <TagLabel>{tagName}</TagLabel>
+                        </Tag>
+                    ))}
+                    <Center height='30px' margin={'0 15px 0 15px'}>
+                        <Divider orientation='vertical' />
+                    </Center>
+                    {['다운로드', '검사삭제'].map((tagName) => (
+                        <Tag size={'lg'} key={tagName} variant='outline' colorScheme='blackAlpha'>
+                            <TagLabel>{tagName}</TagLabel>
+                        </Tag>
+                    ))}
+                    <Select defaultValue={'5'} onChange={changePageSize} name='pagesize' w='10%' h={'32px'} borderColor={"blackAlpha.500"} color={"blackAlpha.900"} minW={'100px'}>
+                        <option value={'5'}>5개씩 보기</option>
+                        <option value={'10'}>10개씩 보기</option>
+                        <option value={'20'}>20개씩 보기</option>
+                    </Select>
+                </HStack>
+            </Box>
+            <StudyList studies={studies} />
         </>
     );
 }

@@ -35,23 +35,22 @@ export interface IStudyProps {
 }
 
 interface IStudyList {
-    "page": number;
-    "pageSize": number;
+    "studies": Array<IStudyProps>
 }
 
-export default function StudyList({page, pageSize} : IStudyList) {
+export default function StudyList({studies} : IStudyList) {
     // Fetching
-    const [isLoading, setIsLoading] = useState(true);
-    const [studies, setStudies] = useState([]);
-    const fetchStudies = async () => {
-        const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/studies?page=${page}&pageSize=${pageSize}`, {method:'POST'});
-        const json = await response.json();
-        setStudies(json);
-        setIsLoading(false);
-    }
-    useEffect(() => {
-        fetchStudies();
-    }, []);
+    // const [isLoading, setIsLoading] = useState(true);
+    // const [studies, setStudies] = useState([]);
+    // const fetchStudies = async () => {
+    //     const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/studies?page=${page}&pageSize=${pageSize}`, {method:'POST'});
+    //     const json = await response.json();
+    //     setStudies(json);
+    //     setIsLoading(false);
+    // }
+    // useEffect(() => {
+    //     fetchStudies();
+    // }, []);
 
     return (
         <>
