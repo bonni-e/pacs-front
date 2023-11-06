@@ -1,4 +1,4 @@
-import { Box, Center, Divider, HStack, IconButton, Input, Select, Tag, TagLabel } from "@chakra-ui/react";
+import { Box, Center, Divider, HStack, IconButton, Input, Link, Select, Tag, TagLabel } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import StudyList from "./StudyList";
 import { FcNext, FcPrevious } from 'react-icons/fc';
@@ -8,6 +8,7 @@ export default function SearchBar() {
     const [pageSize, setPageSize] = useState(5);
     const [totalPageCount, setTotalPageCount] = useState(1);
 
+    const [periods, setPeriods] = useState(9999);
     const [pid, setPid] = useState('');
     const [pname, setPname] = useState('');
     const [reportstatus, setReportstatus] = useState(0);
@@ -17,7 +18,7 @@ export default function SearchBar() {
     const [studies, setStudies] = useState([]);
 
     const fetchStudies = async () => {
-        const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/studies?page=${page}&pageSize=${pageSize}`, { method: 'GET' });
+        const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/studies?page=${page}&pageSize=${pageSize}&periods=${periods}`, { method: 'GET' });
         const json = await response.json();
         setStudies(json.list);
         setTotalPageCount(json.totalPageCount);
@@ -32,7 +33,7 @@ export default function SearchBar() {
             "pname": pname,
             "reportstatus": reportstatus
         };
-        const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/studies?page=${page}&pageSize=${pageSize}`, { method: 'POST', headers: headers, body: JSON.stringify(data) });
+        const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/studies?page=${page}&pageSize=${pageSize}&periods=${periods}`, { method: 'POST', headers: headers, body: JSON.stringify(data) });
         const json = await response.json();
         setStudies(json.list);
         setTotalPageCount(json.totalPageCount);
@@ -44,7 +45,7 @@ export default function SearchBar() {
             fetchSortStudies();
         else
             fetchStudies();
-    }, [pid, pname, reportstatus, page, pageSize]);
+    }, [pid, pname, reportstatus, page, pageSize, periods]);
 
     function changePageSize(e: React.ChangeEvent<HTMLSelectElement>) {
         const pageSizeValue = parseInt(e.target.value);
@@ -74,6 +75,21 @@ export default function SearchBar() {
         setReportstatus(parseInt(e.target.value));
     }
 
+    function changePeriod(tagName:string) {
+        if(tagName === '전체')
+            setPeriods(9999);
+        else if(tagName === '1일')
+            setPeriods(1);
+        else if(tagName === '3일')
+            setPeriods(3);
+        else if(tagName === '1주일')
+            setPeriods(7);
+        else if(tagName === '6개월')
+            setPeriods(180);
+        else if(tagName === '1년')
+            setPeriods(360);
+    }
+
     return (
         <>
             <Box margin={'23px'}>
@@ -89,8 +105,10 @@ export default function SearchBar() {
                     </Select>
                 </HStack>
                 <HStack mt={'20px'} justifyContent={'center'}>
-                    {['전체', '1일', '3일', '1주일', '재설정'].map((tagName) => (
-                        <Tag size={'lg'} key={tagName} variant='outline' colorScheme='blackAlpha'>
+                    {['전체', '1일', '3일', '1주일', '6개월', '1년'].map((tagName) => (
+                        <Tag onClick={() => {
+                            changePeriod(tagName);
+                        }} size={'lg'} key={tagName} variant='outline' colorScheme='blackAlpha'>
                             <TagLabel>{tagName}</TagLabel>
                         </Tag>
                     ))}
