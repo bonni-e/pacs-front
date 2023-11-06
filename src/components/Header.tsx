@@ -1,9 +1,10 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Link, Text } from "@chakra-ui/react";
 import { RiMentalHealthFill } from "react-icons/ri";
 
 export default function Header() {
     return (
-        <Box w="100%"textAlign={'center'} margin={'30px 0 30px 0'}>
+        <Link href="/">
+            <Box w="100%" textAlign={'center'} margin={'30px 0 30px 0'}>
                 <Text
                     color='blue.500'
                     fontSize="5xl"
@@ -12,9 +13,9 @@ export default function Header() {
                     justifyContent={'center'}
                     alignItems={'center'}
                 >
-                <RiMentalHealthFill />MyPACS
-
+                    <RiMentalHealthFill />MyPACS
                 </Text>
-        </Box>
+            </Box>
+        </Link>
     );
 }
