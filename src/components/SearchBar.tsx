@@ -6,14 +6,16 @@ import { FcNext, FcPrevious } from 'react-icons/fc';
 export default function SearchBar() {
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(5);
+    const [totalPageCount, setTotalPageCount] = useState(1);
 
     // Fetching
     const [isLoading, setIsLoading] = useState(true);
     const [studies, setStudies] = useState([]);
     const fetchStudies = async () => {
-        const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/studies?page=${page}&pageSize=${pageSize}`, { method: 'POST' });
+        const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/studies?page=${page}&pageSize=${pageSize}`, { method: 'GET' });
         const json = await response.json();
-        setStudies(json);
+        setStudies(json.list);
+        setTotalPageCount(json.totalPageCount);
         setIsLoading(false);
     }
     useEffect(() => {
@@ -21,10 +23,19 @@ export default function SearchBar() {
     }, [page, pageSize]);
 
     function changePageSize(e: React.ChangeEvent<HTMLSelectElement>) {
-        const page = parseInt(e.target.value);
-        console.log('page : ', page);
-        setPageSize(page);
-        fetchStudies();
+        const pageSizeValue = parseInt(e.target.value);
+        setPage(1);
+        setPageSize(pageSizeValue);
+    }
+
+    function changePagePrevious() {
+        if(page > 1)
+            setPage(page - 1);
+    }
+
+    function changePageNext() {
+        if(page < totalPageCount)
+            setPage(page + 1);
     }
 
     return (
@@ -65,8 +76,8 @@ export default function SearchBar() {
             <StudyList studies={studies} />
             <Center mt={'10px'}>
                 <HStack>
-                    <IconButton aria-label='Previous Page' icon={<FcPrevious />} />
-                    <IconButton aria-label='Next Page' icon={<FcNext />} />
+                    <IconButton onClick={changePagePrevious} aria-label='Previous Page' icon={<FcPrevious />} />
+                    <IconButton onClick={changePageNext} aria-label='Next Page' icon={<FcNext />} />
                 </HStack>
             </Center>
         </>
