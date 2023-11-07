@@ -57,7 +57,7 @@ export default function StudyList({studies} : IStudyList) {
                         <CheckboxGroup>
                             {studies.map((study: IStudyProps) => (
                                 <Tr key={study.studykey}>
-                                    <Td><Checkbox value={study.studykey} />{study.pid}</Td>
+                                    <Td><Checkbox value={(study.studykey).toString()} />{study.pid}</Td>
                                     <Td><StudyPreviousModal pid={study.pid} pname={study.pname} /></Td>
                                     <Td>{study.modality}</Td>
                                     <Td>{study.studydesc}</Td>
