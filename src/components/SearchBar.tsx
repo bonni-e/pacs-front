@@ -64,18 +64,22 @@ export default function SearchBar() {
     }
 
     function sortPageWithPid(e: React.ChangeEvent<HTMLInputElement>) {
+        setPage(1);
         setPid(e.target.value);
     }
 
     function sortPageWithPname(e: React.ChangeEvent<HTMLInputElement>) {
+        setPage(1);
         setPname(e.target.value);
     }
 
     function sortPageWithReportstatus(e: React.ChangeEvent<HTMLSelectElement>) {
+        setPage(1);
         setReportstatus(parseInt(e.target.value));
     }
 
     function changePeriod(tagName:string) {
+        setPage(1);
         if(tagName === '전체')
             setPeriods(9999);
         else if(tagName === '1일')
