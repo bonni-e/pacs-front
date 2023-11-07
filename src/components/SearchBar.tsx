@@ -2,6 +2,7 @@ import { Box, Center, Divider, HStack, IconButton, Input, Link, Select, Tag, Tag
 import { useEffect, useState } from "react";
 import StudyList from "./StudyList";
 import { FcNext, FcPrevious } from 'react-icons/fc';
+import { style } from "@cornerstonejs/tools/dist/esm/stateManagement/annotation/config";
 
 export default function SearchBar() {
     const [page, setPage] = useState(1);
@@ -112,7 +113,12 @@ export default function SearchBar() {
                     {['전체', '1일', '3일', '1주일', '6개월', '1년'].map((tagName) => (
                         <Tag onClick={() => {
                             changePeriod(tagName);
-                        }} size={'lg'} key={tagName} variant='outline' colorScheme='blackAlpha'>
+                        }} size={'lg'} key={tagName} variant='outline' colorScheme='blackAlpha' _hover={{ 
+                            "cursor": "pointer", 
+                            "color": "whitesmoke",
+                            "bg": "blue.500",
+                            "boxShadow": "none"
+                            }}>
                             <TagLabel>{tagName}</TagLabel>
                         </Tag>
                     ))}
@@ -120,7 +126,11 @@ export default function SearchBar() {
                         <Divider orientation='vertical' />
                     </Center>
                     {['다운로드', '검사삭제'].map((tagName) => (
-                        <Tag size={'lg'} key={tagName} variant='outline' colorScheme='blackAlpha'>
+                        <Tag size={'lg'} key={tagName} variant='outline' colorScheme='blackAlpha' _hover={{
+                            "cursor": "pointer",
+                            "color": "whitesmoke",
+                            "bg": "blackAlpha.700",
+                        }}>
                             <TagLabel>{tagName}</TagLabel>
                         </Tag>
                     ))}
