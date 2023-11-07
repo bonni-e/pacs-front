@@ -3,7 +3,7 @@ import { RiMentalHealthFill } from "react-icons/ri";
 
 export default function Header() {
     return (
-        <Link href="/">
+        <Link href="/pacs-front">
             <Box w="100%" textAlign={'center'} margin={'30px 0 30px 0'}>
                 <Text
                     color='blue.500'
