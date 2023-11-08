@@ -28,6 +28,7 @@ export interface IStudyProps {
     "patientkey": string;
     "pid": string;
     "pname": string;
+    "pbirthdatetime": string;
 }
 
 interface IStudyList {

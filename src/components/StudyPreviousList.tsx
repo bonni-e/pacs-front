@@ -19,20 +19,26 @@ import {
     DrawerFooter,
     useDisclosure,
     Textarea,
+    HStack,
 } from '@chakra-ui/react'
 import { IPreviousProps } from './StudyPreviousModal';
 import React, { useEffect, useState } from 'react';
 import { IStudyProps, toStringReportStatus } from './StudyList';
+import DicomViewerModal from './DicomViewerModal';
 
 export default function StudyPreviousList({ pid, pname }: IPreviousProps) {
     // Fetching
     const [isLoading, setIsLoading] = useState(true);
     const [studies, setStudies] = useState([]);
     const fetchStudies = async () => {
-        const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/studies/${pid}`);
-        const json = await response.json();
-        setStudies(json);
-        setIsLoading(false);
+        try {
+            const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/studies/${pid}`);
+            const json = await response.json();
+            setStudies(json);
+            setIsLoading(false);
+        } catch (error) {
+            console.log(error);            
+        }
     }
     useEffect(() => {
         fetchStudies();
@@ -71,7 +77,14 @@ export default function StudyPreviousList({ pid, pname }: IPreviousProps) {
                                 <Td>{study.studydesc}</Td>
                                 <Td>{study.studydate}</Td>
                                 <Td><ReportButton pid={study.pid} studykey={study.studykey} reportstatus={study.reportstatus} /></Td>
-                                <Td>{study.seriescnt}</Td>
+                                <Td>
+                                    <HStack>
+                                        <Text>
+                                            {study.seriescnt}
+                                        </Text>
+                                        <DicomViewerModal study={study} />
+                                    </HStack>
+                                </Td>
                                 <Td>{study.imagecnt}</Td>
                                 <Td>{study.verifyflag}</Td>
                             </Tr>
@@ -131,7 +144,7 @@ function ReportButton({ pid, studykey, reportstatus }: IReportButtonProps) {
 
                     <DrawerBody>
                         <Textarea h={'20vh'} placeholder='코멘트' resize={'none'} mb="15px">
-                            {reports.length > 0 ? reports[0].conclusion : '' }
+                            {reports.length > 0 ? reports[0].conclusion : ''}
                         </Textarea>
                         <Textarea h={'30vh'} defaultValue={reports.length > 0 ? reports[0].interpretation : `[Finding]\n\n\n[Conclusion]\n\n\n[Recommend]\n\n\n`} resize={'none'} mb="15px"></Textarea>
                         <Text color={'blackAlpha.500'} fontSize={'sm'} pl={'3px'}>예비판독의</Text>
