@@ -28,6 +28,8 @@ export interface IDicomViewerModalProps {
 export default function DicomViewerModal({ study }: IDicomViewerModalProps) {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
+
+
     return (
         <>
             <IconButton onClick={onOpen} aria-label='dicom viwer' variant={'link'} colorScheme='blue' icon={<IoMdSearch />} />
@@ -37,11 +39,13 @@ export default function DicomViewerModal({ study }: IDicomViewerModalProps) {
                 <ModalContent>
                     <ModalHeader>
                         <Popover>
-                            <PopoverTrigger>
-                                <Button variant={'link'} size={'lg'}>
-                                    {study.pname} (ID : {study.pid})
-                                </Button>
-                            </PopoverTrigger>
+                            
+                                <PopoverTrigger>
+                                    <Button variant={'link'} size={'lg'} mr={'10px'}>
+                                        {study.pname} (ID : {study.pid})
+                                    </Button>
+                                </PopoverTrigger>
+                               
                             <PopoverContent color='white' bg='blue.800' borderColor='blue.800' ml={"20px"}>
                                 <PopoverArrow bg='blue.800' />
                                 <PopoverCloseButton />
