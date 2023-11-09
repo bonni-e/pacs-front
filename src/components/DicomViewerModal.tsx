@@ -39,13 +39,11 @@ export default function DicomViewerModal({ study }: IDicomViewerModalProps) {
                 <ModalContent>
                     <ModalHeader>
                         <Popover>
-                            
-                                <PopoverTrigger>
-                                    <Button variant={'link'} size={'lg'} mr={'10px'}>
-                                        {study.pname} (ID : {study.pid})
-                                    </Button>
-                                </PopoverTrigger>
-                               
+                            <PopoverTrigger>
+                                <Button variant={'link'} size={'lg'} mr={'10px'}>
+                                    {study.pname} (ID : {study.pid})
+                                </Button>
+                            </PopoverTrigger>
                             <PopoverContent color='white' bg='blue.800' borderColor='blue.800' ml={"20px"}>
                                 <PopoverArrow bg='blue.800' />
                                 <PopoverCloseButton />
@@ -63,15 +61,11 @@ export default function DicomViewerModal({ study }: IDicomViewerModalProps) {
                             </PopoverContent>
                         </Popover>
                     </ModalHeader>
-                    <ModalCloseButton />
+                    <ModalCloseButton color={"blue.500"} size={'lg'} mr={'12px'}/>
                     <ModalBody>
                         <DicomViewer study={study} />
                     </ModalBody>
                     <ModalFooter>
-                        <Button colorScheme='blue' mr={3} onClick={onClose}>
-                            Close
-                        </Button>
-                        <Button variant='ghost'>Secondary Action</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
