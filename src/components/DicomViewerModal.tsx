@@ -28,8 +28,6 @@ export interface IDicomViewerModalProps {
 export default function DicomViewerModal({ study }: IDicomViewerModalProps) {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-
-
     return (
         <>
             <IconButton onClick={onOpen} aria-label='dicom viwer' variant={'link'} colorScheme='blue' icon={<IoMdSearch />} />
@@ -66,6 +64,7 @@ export default function DicomViewerModal({ study }: IDicomViewerModalProps) {
                         <DicomViewer study={study} />
                     </ModalBody>
                     <ModalFooter>
+                        <Button onClick={onClose} colorScheme='blue' variant={"ghost"}>Close</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
