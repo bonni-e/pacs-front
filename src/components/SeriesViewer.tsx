@@ -29,7 +29,7 @@ export interface ISeriesProps {
     "filesize": number;
 }
 
-export default function DicomViewer({ study }: IDicomViewerModalProps) {
+export default function SeriesViewer({ study }: IDicomViewerModalProps) {
     let count = 0;
 
     const [width, setWidth] = useState("40vh");
@@ -49,8 +49,8 @@ export default function DicomViewer({ study }: IDicomViewerModalProps) {
 
     function zoonOut() {
         const w = parseInt(width.split('vh')[0]);
-        if(w >= 40) {
-            setWidth((w-10)+"vh");
+        if (w >= 40) {
+            setWidth((w - 10) + "vh");
         }
     }
 

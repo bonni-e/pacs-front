@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react'
 import { IoMdSearch } from "react-icons/io";
 import { IStudyProps } from './StudyList';
-import DicomViewer from './SeriesViewer';
+import SeriesViewer from './SeriesViewer';
 
 export interface IDicomViewerModalProps {
     "study": IStudyProps
@@ -61,7 +61,7 @@ export default function DicomViewerModal({ study }: IDicomViewerModalProps) {
                     </ModalHeader>
                     <ModalCloseButton color={"blue.500"} size={'lg'} mr={'12px'}/>
                     <ModalBody>
-                        <DicomViewer study={study} />
+                        <SeriesViewer study={study} />
                     </ModalBody>
                     <ModalFooter>
                         <Button onClick={onClose} colorScheme='blue' variant={"ghost"}>Close</Button>
