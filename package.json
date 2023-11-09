@@ -59,6 +59,7 @@
   "devDependencies": {
     "@chakra-ui/react": "^2.8.1",
     "@types/react-router-dom": "^5.3.3",
-    "@types/styled-components": "^5.1.29"
+    "@types/styled-components": "^5.1.29",
+    "dicom-parser": "^1.8.21"
   }
 }
