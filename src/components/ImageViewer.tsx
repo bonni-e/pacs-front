@@ -1,8 +1,7 @@
-import { Box, HStack, Image, Stack, Text, position } from "@chakra-ui/react";
+import { Box, HStack, Stack, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { ISeriesProps } from "./SeriesViewer";
 import { IStudyProps } from "./StudyList";
-import { inherits } from "util";
 import DicomImage from "./DicomImage";
 
 interface IImageSummaryProps {
@@ -46,7 +45,7 @@ export default function ImageViewer({ study, series }: IImageViewerProps) {
 
     return (
         <>
-            <Stack h={'100%'} position={"relative"}  alignItems={"center"} justifyContent={"center"} style={{ overflow: "hidden" }} >
+            <Stack overflow={"hidden"} h={'100%'} position={"relative"} alignItems={"center"} justifyContent={"center"}>
                 <DicomImage seriesinsuid={series.seriesinsuid} />
                 <Box w={'100%'} h={'100%'} position={"absolute"}>
                     <Stack h={'100%'} justifyContent={"space-between"} >

@@ -71,7 +71,14 @@ export default function SeriesViewer({ study }: IDicomViewerModalProps) {
             <Stack>
                 <HStack wrap={"wrap"}>
                     {series.map((series: ISeriesProps) => (
-                        <Box className="view-box" w={width} h={width} color={"whitesmoke"} bgColor={"blackAlpha.900"} padding={'15px 17px 15px 15px'}>
+                        <Box
+                            id={series.seriesinsuid}
+                            className="view-box"
+                            w={width}
+                            h={width}
+                            color={"whitesmoke"}
+                            bgColor={"blackAlpha.900"}
+                            padding={'15px 17px 15px 15px'}>
                             <ImageViewer study={study} series={series} />
                         </Box>
                     ))}
