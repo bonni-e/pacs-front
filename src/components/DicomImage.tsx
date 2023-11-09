@@ -1,13 +1,20 @@
-import { Button } from "@chakra-ui/react";
-import { Image as ChakraImage } from "@chakra-ui/react";
+import {
+    Image as ChakraImage,
+    Button,
+    Modal,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    useDisclosure,
+    ModalOverlay,
+} from "@chakra-ui/react";
 import FallbackImage from "../static/images/fallbackimg.jpg";
 import { useEffect, useRef, useState } from "react";
-import cornerstone, { RenderingEngine, init } from '@cornerstonejs/core';
-import { ViewportType } from "@cornerstonejs/core/dist/esm/enums";
+import DicomImageReader from "./DicomImageRender";
 
-init();
-
-interface IImageProps {
+export interface IImageProps {
     "path": string;
     "fname": string;
     "delflag": number;
@@ -23,15 +30,17 @@ interface IImageProps {
     "pixelcolumns": number;
     "window": number;
     "lev": number;
+    "transfersyntaxuid": string;
 }
 
-interface IDicomImageProps {
+export interface IDicomImageProps {
     "seriesinsuid": string;
 }
 
 export default function DicomImage({ seriesinsuid }: IDicomImageProps) {
 
-    const [imageIds, setImageIds] = useState<Array<string>>();
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
     const [storagePath, setStoragePath] = useState('');
     const [images, setImages] = useState<Array<IImageProps>>([]);
     const datas = useRef<string[]>([]);
@@ -44,7 +53,7 @@ export default function DicomImage({ seriesinsuid }: IDicomImageProps) {
             setStoragePath(json.osServiceStorageRoot);
             setImages(json.list);
             datas.current = json.listDicomBase64;
-            
+
 
             const ids = new Array<string>();
             images.map((image: IImageProps) => {
@@ -52,7 +61,6 @@ export default function DicomImage({ seriesinsuid }: IDicomImageProps) {
                 const imageId = storagePath + image.path + image.fname;
                 ids.push(imageId);
             });
-            setImageIds(ids);
         } catch (error) {
             console.log(error);
         }
@@ -85,7 +93,22 @@ export default function DicomImage({ seriesinsuid }: IDicomImageProps) {
     return (
         <>
             <Button variant={"link"} colorScheme="red" style={{ position: "absolute" }}>{images[index]?.imagekey}</Button>
-            <ChakraImage src={`data:image/jpeg;base64,${datas.current[index]}`} fallbackSrc={FallbackImage} />
+            <ChakraImage onDoubleClick={onOpen} src={`data:image/jpeg;base64,${datas.current[index]}`} fallbackSrc={FallbackImage} pointerEvents={"all"} />
+            <Modal isOpen={isOpen} onClose={onClose} size={"full"}>
+                <ModalOverlay />
+                <ModalContent color={"blue.500"} bgColor={"blackAlpha.800"}>
+                    <ModalCloseButton size={"lg"} mr={"27px"} />
+                    <ModalHeader>
+                        Series
+                    </ModalHeader>
+                    <ModalBody>
+                        <DicomImageReader seriesinsuid={seriesinsuid} images={images} />
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button onClick={onClose} colorScheme="blue" variant={"ghost"}>Close</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </>
     );
 }

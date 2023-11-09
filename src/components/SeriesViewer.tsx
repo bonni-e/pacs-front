@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { IDicomViewerModalProps } from "./DicomViewerModal";
-import { Box, Divider, HStack, IconButton, Stack } from "@chakra-ui/react";
+import {
+    Box, Divider, HStack, IconButton, Stack
+} from "@chakra-ui/react";
 import ImageViewer from "./ImageViewer";
 import { BsZoomIn, BsZoomOut } from "react-icons/bs";
+import DicomImageReader from "./DicomImageRender";
 
 export interface ISeriesProps {
     "studykey": number;
@@ -71,16 +74,19 @@ export default function SeriesViewer({ study }: IDicomViewerModalProps) {
             <Stack>
                 <HStack wrap={"wrap"}>
                     {series.map((series: ISeriesProps) => (
-                        <Box
-                            id={series.seriesinsuid}
-                            className="view-box"
-                            w={width}
-                            h={width}
-                            color={"whitesmoke"}
-                            bgColor={"blackAlpha.900"}
-                            padding={'15px 17px 15px 15px'}>
-                            <ImageViewer study={study} series={series} />
-                        </Box>
+                        <>
+                            <Box pointerEvents={"none"}
+                                id={series.seriesinsuid}
+                                className="view-box"
+                                w={width}
+                                h={width}
+                                color={"whitesmoke"}
+                                bgColor={"blackAlpha.900"}
+                                padding={'15px 17px 15px 15px'}>
+                                <ImageViewer study={study} series={series} />
+                            </Box>
+
+                        </>
                     ))}
                 </HStack>
             </Stack>

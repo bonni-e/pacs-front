@@ -45,9 +45,9 @@ export default function ImageViewer({ study, series }: IImageViewerProps) {
 
     return (
         <>
-            <Stack overflow={"hidden"} h={'100%'} position={"relative"} alignItems={"center"} justifyContent={"center"}>
+            <Stack overflow={"hidden"} h={'100%'} position={"relative"} alignItems={"center"} justifyContent={"center"} >
                 <DicomImage seriesinsuid={series.seriesinsuid} />
-                <Box w={'100%'} h={'100%'} position={"absolute"}>
+                <Box w={'100%'} h={'100%'} position={"absolute"} pointerEvents={"none"}>
                     <Stack h={'100%'} justifyContent={"space-between"} >
                         <HStack justifyContent={"space-between"} alignItems={"flex-start"}>
                             <Box>
