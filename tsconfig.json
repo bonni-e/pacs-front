@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "./src",
     "target": "es5",
     "lib": [
       "dom",
@@ -18,9 +19,25 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "paths": {
+      "path": [
+        "react-scripts/*",
+      ]
+    }
   },
   "include": [
-    "src"
-  ]
+    "src",
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "node_modules/cornerstone-math",
+    "node_modules/cornerstone-tools",
+    "cornerstone-web-image-loader",
+    "hammerjs",
+    "build",
+    "dist"
+  ],  
 }
