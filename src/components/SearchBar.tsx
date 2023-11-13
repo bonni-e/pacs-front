@@ -15,11 +15,14 @@ export default function SearchBar() {
     const [reportstatus, setReportstatus] = useState(0);
 
     // Fetching
+    // const apiUrl = process.env.MYPACS_API_URL;
+    const apiUrl = "https://192.168.30.88:8443";
+    
     const [isLoading, setIsLoading] = useState(true);
     const [studies, setStudies] = useState([]);
 
     const fetchStudies = async () => {
-        const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/studies?page=${page}&pageSize=${pageSize}&periods=${periods}`, { method: 'GET' });
+        const response = await fetch(`${apiUrl}/v1/api/pacs/studies?page=${page}&pageSize=${pageSize}&periods=${periods}`, { method: 'GET' });
         const json = await response.json();
         setStudies(json.list);
         setTotalPageCount(json.totalPageCount);
@@ -34,7 +37,7 @@ export default function SearchBar() {
             "pname": pname,
             "reportstatus": reportstatus
         };
-        const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/studies?page=${page}&pageSize=${pageSize}&periods=${periods}`, { method: 'POST', headers: headers, body: JSON.stringify(data) });
+        const response = await fetch(`${apiUrl}/v1/api/pacs/studies?page=${page}&pageSize=${pageSize}&periods=${periods}`, { method: 'POST', headers: headers, body: JSON.stringify(data) });
         const json = await response.json();
         setStudies(json.list);
         setTotalPageCount(json.totalPageCount);
