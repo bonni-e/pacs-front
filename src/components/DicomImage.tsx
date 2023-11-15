@@ -47,13 +47,14 @@ export default function DicomImage({ seriesinsuid }: IDicomImageProps) {
     const [index, setIndex] = useState(0);
 
     const fetchImages = async () => {
+        const apiUrl = `${process.env.REACT_APP_MYPACS_SERVER}`;
+
         try {
-            const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/images/${seriesinsuid}`);
+            const response = await fetch(`${apiUrl}/v1/api/pacs/images/${seriesinsuid}`);
             const json = await (response.json());
             setStoragePath(json.osServiceStorageRoot);
             setImages(json.list);
             datas.current = json.listDicomBase64;
-
 
             const ids = new Array<string>();
             images.map((image: IImageProps) => {
