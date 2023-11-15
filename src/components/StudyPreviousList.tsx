@@ -32,12 +32,12 @@ export default function StudyPreviousList({ pid, pname }: IPreviousProps) {
     const [studies, setStudies] = useState([]);
     const fetchStudies = async () => {
         try {
-            const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/studies/${pid}`);
+            const response = await fetch(`${process.env.REACT_APP_MYPACS_SERVER}/v1/api/pacs/studies/${pid}`);
             const json = await response.json();
             setStudies(json);
             setIsLoading(false);
         } catch (error) {
-            console.log(error);            
+            console.log(error);
         }
     }
     useEffect(() => {
@@ -119,10 +119,9 @@ function ReportButton({ pid, studykey, reportstatus }: IReportButtonProps) {
 
     const [reports, setReports] = useState(new Array<IReportContentProps>());
     const fetchReports = async () => {
-        const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/reports/${pid}/${studykey}`);
+        const response = await fetch(`${process.env.REACT_APP_MYPACS_SERVER}/v1/api/pacs/reports/${pid}/${studykey}`);
         const json = await response.json();
         setReports(json);
-        console.log('report :', json);
     }
     useEffect(() => {
         fetchReports();

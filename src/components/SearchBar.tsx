@@ -2,7 +2,6 @@ import { Box, Center, Divider, HStack, IconButton, Input, Link, Select, Tag, Tag
 import { useEffect, useState } from "react";
 import StudyList from "./StudyList";
 import { FcNext, FcPrevious } from 'react-icons/fc';
-import { style } from "@cornerstonejs/tools/dist/esm/stateManagement/annotation/config";
 
 export default function SearchBar() {
     const [page, setPage] = useState(1);
@@ -15,9 +14,8 @@ export default function SearchBar() {
     const [reportstatus, setReportstatus] = useState(0);
 
     // Fetching
-    // const apiUrl = process.env.MYPACS_API_URL;
-    const apiUrl = "https://192.168.30.88:8443";
-    
+    const apiUrl = `${process.env.REACT_APP_MYPACS_SERVER}`;
+
     const [isLoading, setIsLoading] = useState(true);
     const [studies, setStudies] = useState([]);
 
@@ -82,19 +80,19 @@ export default function SearchBar() {
         setReportstatus(parseInt(e.target.value));
     }
 
-    function changePeriod(tagName:string) {
+    function changePeriod(tagName: string) {
         setPage(1);
-        if(tagName === '전체')
+        if (tagName === '전체')
             setPeriods(9999);
-        else if(tagName === '1일')
+        else if (tagName === '1일')
             setPeriods(1);
-        else if(tagName === '3일')
+        else if (tagName === '3일')
             setPeriods(3);
-        else if(tagName === '1주일')
+        else if (tagName === '1주일')
             setPeriods(7);
-        else if(tagName === '6개월')
+        else if (tagName === '6개월')
             setPeriods(180);
-        else if(tagName === '1년')
+        else if (tagName === '1년')
             setPeriods(360);
     }
 
@@ -104,8 +102,8 @@ export default function SearchBar() {
                 <HStack >
                     <Input onChange={sortPageWithPid} variant={'filled'} placeholder="환자아이디" />
                     <Input onChange={sortPageWithPname} variant={'filled'} placeholder="환자이름" />
-                    <Select onChange={sortPageWithReportstatus} variant={'filled'}>
-                        <option value={''} selected>판독상태</option>
+                    <Select defaultValue={''} onChange={sortPageWithReportstatus} variant={'filled'}>
+                        <option value={''} >판독상태</option>
                         <option value={'3'} >읽지않음</option>
                         <option value={'4'} >열람중</option>
                         <option value={'5'} >예비판독</option>
@@ -116,12 +114,12 @@ export default function SearchBar() {
                     {['전체', '1일', '3일', '1주일', '6개월', '1년'].map((tagName) => (
                         <Tag onClick={() => {
                             changePeriod(tagName);
-                        }} size={'lg'} key={tagName} variant='outline' colorScheme='blackAlpha' _hover={{ 
-                            "cursor": "pointer", 
+                        }} size={'lg'} key={tagName} variant='outline' colorScheme='blackAlpha' _hover={{
+                            "cursor": "pointer",
                             "color": "whitesmoke",
                             "bg": "blue.500",
                             "boxShadow": "none"
-                            }}>
+                        }}>
                             <TagLabel>{tagName}</TagLabel>
                         </Tag>
                     ))}

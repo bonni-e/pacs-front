@@ -39,7 +39,7 @@ export default function SeriesViewer({ study }: IDicomViewerModalProps) {
     const [series, setSeries] = useState([]);
     const fetchSeries = async () => {
         try {
-            const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/series/${study.studykey}`);
+            const response = await fetch(`${process.env.REACT_APP_MYPACS_SERVER}/v1/api/pacs/series/${study.studykey}`);
             const json = await response.json();
             setSeries(json);
         } catch (error) {
@@ -75,7 +75,9 @@ export default function SeriesViewer({ study }: IDicomViewerModalProps) {
                 <HStack wrap={"wrap"}>
                     {series.map((series: ISeriesProps) => (
                         <>
-                            <Box pointerEvents={"none"}
+                            <Box
+                                key={series.seriesinsuid}
+                                pointerEvents={"none"}
                                 id={series.seriesinsuid}
                                 className="view-box"
                                 w={width}
@@ -83,9 +85,8 @@ export default function SeriesViewer({ study }: IDicomViewerModalProps) {
                                 color={"whitesmoke"}
                                 bgColor={"blackAlpha.900"}
                                 padding={'15px 17px 15px 15px'}>
-                                <ImageViewer study={study} series={series} />
+                                <ImageViewer key={series.serieskey} study={study} series={series} />
                             </Box>
-
                         </>
                     ))}
                 </HStack>

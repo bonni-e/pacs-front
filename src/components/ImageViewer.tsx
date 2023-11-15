@@ -32,7 +32,7 @@ export default function ImageViewer({ study, series }: IImageViewerProps) {
     const [summary, setSummary] = useState<IImageSummaryProps>();
     const fetchSummay = async () => {
         try {
-            const response = await fetch(`https://192.168.30.88:8443/v1/api/pacs/images/${series.seriesinsuid}`, { method: "POST" });
+            const response = await fetch(`${process.env.REACT_APP_MYPACS_SERVER}/v1/api/pacs/images/${series.seriesinsuid}`, { method: "POST" });
             const json = await response.json();
             setSummary(json);
         } catch (error) {
