@@ -30,13 +30,10 @@
     "src",
     "src/**/*.ts",
     "src/**/*.tsx"
-  ],
+, "webpack.config.ts"  ],
   "exclude": [
     "node_modules",
-    "node_modules/cornerstone-math",
-    "node_modules/cornerstone-tools",
-    "cornerstone-web-image-loader",
-    "hammerjs",
+    "node_modules/@cornerstone/core",
     "build",
     "dist"
   ],  
