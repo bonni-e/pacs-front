@@ -61,7 +61,7 @@ export default function DicomViewerModal({ study }: IDicomViewerModalProps) {
                     </ModalHeader>
                     <ModalCloseButton color={"blue.500"} size={'lg'} mr={'12px'}/>
                     <ModalBody>
-                        <SeriesViewer study={study} />
+                        <SeriesViewer key={study.studykey} study={study} />
                     </ModalBody>
                     <ModalFooter>
                         <Button onClick={onClose} colorScheme='blue' variant={"ghost"}>Close</Button>
