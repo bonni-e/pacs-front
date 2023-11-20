@@ -62,6 +62,9 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.29",
     "babel-preset-react-app": "^10.0.1",
+    "cornerstone-core": "^2.6.1",
+    "cornerstone-tools": "^6.0.10",
+    "cornerstone-wado-image-loader": "^4.13.2",
     "dicom-parser": "^1.8.21"
   }
 }
