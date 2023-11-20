@@ -13,6 +13,7 @@ import {
 import FallbackImage from "../static/images/fallbackimg.jpg";
 import { useEffect, useRef, useState } from "react";
 import DicomImageReader from "./DicomImageRender";
+import DicomImageReaderOld from "./DicomImageRenderOld";
 
 export interface IImageProps {
     "path": string;
@@ -104,6 +105,7 @@ export default function DicomImage({ seriesinsuid }: IDicomImageProps) {
                     </ModalHeader>
                     <ModalBody>
                         <DicomImageReader seriesinsuid={seriesinsuid} images={images} />
+                        {/* <DicomImageReaderOld seriesinsuid={seriesinsuid} images={images} /> */}
                     </ModalBody>
                     <ModalFooter>
                         <Button onClick={onClose} colorScheme="blue" variant={"ghost"}>Close</Button>
