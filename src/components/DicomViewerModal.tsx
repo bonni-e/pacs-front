@@ -31,7 +31,6 @@ export default function DicomViewerModal({ study }: IDicomViewerModalProps) {
     return (
         <>
             <IconButton onClick={onOpen} aria-label='dicom viwer' variant={'link'} colorScheme='blue' icon={<IoMdSearch />} />
-
             <Modal isOpen={isOpen} onClose={onClose} size={'full'}>
                 <ModalOverlay />
                 <ModalContent>
