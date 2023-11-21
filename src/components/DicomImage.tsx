@@ -9,6 +9,7 @@ import {
     ModalCloseButton,
     useDisclosure,
     ModalOverlay,
+    Text,
 } from "@chakra-ui/react";
 import FallbackImage from "../static/images/fallbackimg.jpg";
 import { useEffect, useRef, useState } from "react";
@@ -102,6 +103,7 @@ export default function DicomImage({ seriesinsuid }: IDicomImageProps) {
                     <ModalCloseButton size={"lg"} mr={"27px"} />
                     <ModalHeader>
                         Series
+                        <Text color="whitesmoke" fontSize={'medium'}>{seriesinsuid}</Text>
                     </ModalHeader>
                     <ModalBody>
                         <DicomImageReader seriesinsuid={seriesinsuid} images={images} />
