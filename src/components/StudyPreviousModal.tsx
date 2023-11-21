@@ -1,4 +1,14 @@
-import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react";
+import {
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    Button,
+    useDisclosure,
+} from '@chakra-ui/react'
 import StudyPreviousList from "./StudyPreviousList";
 
 export interface IPreviousProps {
@@ -10,7 +20,7 @@ export default function StudyPreviousModal({ pname, pid }: IPreviousProps) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     return (
         <>
-            <Button size={'xs'} onClick={onOpen}>{pname}</Button>
+            <Button size="xs" onClick={onOpen}>{pname}</Button>
             <Modal isOpen={isOpen} onClose={onClose} size={"6xl"}>
                 <ModalOverlay />
                 <ModalContent>
