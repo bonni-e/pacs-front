@@ -74,8 +74,8 @@ export default function DicomImageReaderOld({ seriesinsuid, images }: IDicomImag
             fetchData();
         }
 
-        console.log('imageIds : ', imageIds);
-        console.log('isLoaded : ', isLoaded);
+        // console.log('imageIds : ', imageIds);
+        // console.log('isLoaded : ', isLoaded);
 
     }, [isLoaded]);
 
