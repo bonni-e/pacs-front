@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useRef } from 'react';
 import CornerstoneViewport from 'react-cornerstone-viewport'
 
 export interface IViewportProps {
@@ -6,7 +6,7 @@ export interface IViewportProps {
 }
 export default function Viewport({ ids }: IViewportProps) {
 
-    const [state, setState] = useState({
+    const state = useRef({
         tools: [
             // Mouse
             {
@@ -34,20 +34,10 @@ export default function Viewport({ ids }: IViewportProps) {
         imageIds: ids,
     });
 
-    useEffect(() => {
-        console.log('state.imageIds : ', ids);
-        console.log('state.imageIds : ', state.imageIds);
-        setState(prevState => {
-            return {
-                ...prevState
-            }
-        })
-    }, []);
-
     return (
         <CornerstoneViewport
-            tools={state.tools}
-            imageIds={state.imageIds}
+            tools={state.current.tools}
+            imageIds={state.current.imageIds}
             style={{
                 width: '80vh',
                 height: '80vh',
