@@ -103,11 +103,10 @@ export default function DicomImage({ seriesinsuid }: IDicomImageProps) {
                     <ModalCloseButton size={"lg"} mr={"27px"} />
                     <ModalHeader>
                         Series
-                        <Text color="whitesmoke" fontSize={'medium'}>{seriesinsuid}</Text>
                     </ModalHeader>
                     <ModalBody>
-                        <DicomImageReader seriesinsuid={seriesinsuid} images={images} />
-                        {/* <DicomImageReaderOld seriesinsuid={seriesinsuid} images={images} /> */}
+                        {/* <DicomImageReader seriesinsuid={seriesinsuid} images={images} /> */}
+                        <DicomImageReaderOld seriesinsuid={seriesinsuid} images={images} />
                     </ModalBody>
                     <ModalFooter>
                         <Button onClick={onClose} colorScheme="blue" variant={"ghost"}>Close</Button>
