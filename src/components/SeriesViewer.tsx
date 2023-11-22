@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { IDicomViewerModalProps } from "./DicomViewerModal";
 import {
     Box, Divider, HStack, IconButton, Stack
@@ -74,7 +74,7 @@ export default function SeriesViewer({ study }: IDicomViewerModalProps) {
             <Stack>
                 <HStack wrap={"wrap"}>
                     {series.map((series: ISeriesProps) => (
-                        <>
+                        <Fragment key={series.seriesinsuid}>
                             <Box
                                 key={series.seriesinsuid}
                                 pointerEvents={"none"}
@@ -84,10 +84,11 @@ export default function SeriesViewer({ study }: IDicomViewerModalProps) {
                                 h={width}
                                 color={"whitesmoke"}
                                 bgColor={"blackAlpha.900"}
-                                padding={'15px 17px 15px 15px'}>
-                                <ImageViewer key={series.serieskey} study={study} series={series} />
+                                padding={'15px 17px 15px 15px'}
+                            >
+                                <ImageViewer study={study} series={series} />
                             </Box>
-                        </>
+                        </Fragment>
                     ))}
                 </HStack>
             </Stack>
