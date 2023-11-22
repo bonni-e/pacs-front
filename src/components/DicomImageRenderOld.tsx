@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { IDicomImageReaderProps } from "./DicomImageRender";
 import { Box } from "@chakra-ui/react";
-import CornerstoneViewport from 'react-cornerstone-viewport'
 import cornerstone from 'cornerstone-core';
 import cornerstoneTools from 'cornerstone-tools';
 import cornerstoneMath from 'cornerstone-math';
 import Hammer from 'hammerjs';
 import cornerstoneWADOImageLoader from 'cornerstone-wado-image-loader';
 import dicomParser from 'dicom-parser';
+import Viewport from "./Viewport";
 
 cornerstoneTools.external.cornerstone = cornerstone;
 cornerstoneTools.external.Hammer = Hammer;
@@ -39,42 +39,10 @@ cornerstoneWADOImageLoader.webWorkerManager.initialize({
     },
 });
 
-interface IToolStateProps {
-    tools: { name: string; mode: string; modeOptions?: { mouseButtonMask: number } | undefined }[];
-    imageIds: (string | null)[];
-}
-
 export default function DicomImageReaderOld({ seriesinsuid, images }: IDicomImageReaderProps) {
 
     const [isLoaded, setIsLoaded] = useState(false);
-    const [state, setState] = useState<IToolStateProps>({
-        tools: [
-            // Mouse
-            {
-                name: 'Wwwc',
-                mode: 'active',
-                modeOptions: { mouseButtonMask: 1 },
-            },
-            {
-                name: 'Zoom',
-                mode: 'active',
-                modeOptions: { mouseButtonMask: 2 },
-            },
-            {
-                name: 'Pan',
-                mode: 'active',
-                modeOptions: { mouseButtonMask: 4 },
-            },
-            // Scroll
-            { name: 'StackScrollMouseWheel', mode: 'active' },
-            // Touch
-            { name: 'PanMultiTouch', mode: 'active' },
-            { name: 'ZoomTouchPinch', mode: 'active' },
-            { name: 'StackScrollMultiTouch', mode: 'active' },
-        ],
-        imageIds: [],
-    });
-    const [sopinsuid, setSopinsuid] = useState(images[0].sopinstanceuid);
+    const [imageIds, setImageIds] = useState<(string | null)[]>([]);
 
     const fetchImage = async (sopinstanceuid: string) => {
         try {
@@ -82,63 +50,40 @@ export default function DicomImageReaderOld({ seriesinsuid, images }: IDicomImag
             const buffer = await response.arrayBuffer();
             const imageId = `dicomweb:${await URL.createObjectURL(new Blob([buffer], { type: 'application/dicom' }))}`;
             // console.warn('imageId : ', imageId);
-
             return imageId;
 
         } catch (error) {
             console.error('Error fetching image:', error);
-
             return null;
         }
     }
 
     useEffect(() => {
-        console.log('imageIds : ', state.imageIds);
-
-    }, [state.imageIds]);
-
-    useEffect(() => {
-        let intervalId: NodeJS.Timeout;
-        
         const fetchData = async () => {
             try {
                 const imageIdPromises = images.map((image) => fetchImage(image.sopinstanceuid));
                 const resolvedImageIds = await Promise.all(imageIdPromises.filter(id => id !== null));
-
-                setState(prevState => {
-                    return {
-                        ...prevState,
-                        imageIds: [...resolvedImageIds]
-                    }
-                });
-
+                setImageIds([...resolvedImageIds]);
                 setIsLoaded(true);
-                clearInterval(intervalId);
-
             } catch (error) {
                 console.error('Error fetching images:', error);
             }
         };
 
         if (!isLoaded) {
-            intervalId = setInterval(() => {
-                fetchData();
-            }, 500);
+            fetchData();
         }
-    }, []);
+
+        console.log('imageIds : ', imageIds);
+        console.log('isLoaded : ', isLoaded);
+
+    }, [isLoaded]);
 
     return (
         <>
             <Box id="content">
-                <CornerstoneViewport
-                    tools={state.tools}
-                    imageIds={state.imageIds}
-                    style={{
-                        width: '80vh',
-                        height: '80vh',
-                        margin: 'auto',
-                        border: 'solid 1px, whitesmoke'
-                    }} />
+                {/* https://react.dev/learn/conditional-rendering#logical-and-operator- */}
+                {isLoaded && <Viewport ids={imageIds} />}
             </Box>
         </>
     );
