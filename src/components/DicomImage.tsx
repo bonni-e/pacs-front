@@ -9,12 +9,13 @@ import {
     ModalCloseButton,
     useDisclosure,
     ModalOverlay,
-    Text,
+    Skeleton,
 } from "@chakra-ui/react";
 import FallbackImage from "../static/images/fallbackimg.jpg";
 import { useEffect, useRef, useState } from "react";
 import DicomImageReader from "./DicomImageRender";
 import DicomImageReaderOld from "./DicomImageRenderOld";
+import { inherits } from "util";
 
 export interface IImageProps {
     "path": string;
@@ -44,6 +45,7 @@ export default function DicomImage({ seriesinsuid }: IDicomImageProps) {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const [storagePath, setStoragePath] = useState('');
+    const [isLoaded, setIsLoaded] = useState(false);
     const [images, setImages] = useState<Array<IImageProps>>([]);
     const datas = useRef<string[]>([]);
     const [index, setIndex] = useState(0);
@@ -57,13 +59,7 @@ export default function DicomImage({ seriesinsuid }: IDicomImageProps) {
             setStoragePath(json.osServiceStorageRoot);
             setImages(json.list);
             datas.current = json.listDicomBase64;
-
-            const ids = new Array<string>();
-            images.map((image: IImageProps) => {
-                // ImageId Format : root + path + filename
-                const imageId = storagePath + image.path + image.fname;
-                ids.push(imageId);
-            });
+            setIsLoaded(true);
         } catch (error) {
             console.log(error);
         }
@@ -71,13 +67,6 @@ export default function DicomImage({ seriesinsuid }: IDicomImageProps) {
     useEffect(() => {
         fetchImages();
     }, []);
-
-    function renderImages() {
-
-    }
-    useEffect(() => {
-        // renderImages();
-    }, [datas]);
 
     useEffect(() => {
         document.getElementById(seriesinsuid)?.addEventListener('click', (e) => {
@@ -95,24 +84,43 @@ export default function DicomImage({ seriesinsuid }: IDicomImageProps) {
 
     return (
         <>
-            <Button variant={"link"} colorScheme="red" style={{ position: "absolute" }}>{images[index]?.imagekey}</Button>
-            <ChakraImage onDoubleClick={onOpen} src={`data:image/jpeg;base64,${datas.current[index]}`} fallbackSrc={FallbackImage} pointerEvents={"all"} />
-            <Modal isOpen={isOpen} onClose={onClose} size={"full"}>
-                <ModalOverlay />
-                <ModalContent color={"blue.500"} bgColor={"blackAlpha.800"}>
-                    <ModalCloseButton size={"lg"} mr={"27px"} />
-                    <ModalHeader>
-                        Series
-                    </ModalHeader>
-                    <ModalBody>
-                        {/* <DicomImageReader seriesinsuid={seriesinsuid} images={images} /> */}
-                        <DicomImageReaderOld seriesinsuid={seriesinsuid} images={images} />
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button onClick={onClose} colorScheme="blue" variant={"ghost"}>Close</Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
+            <Skeleton
+                isLoaded={isLoaded}
+                startColor="blue.500"
+                endColor="blue.900"
+                w={'100%'}
+            >
+                <Button
+                    variant={"link"}
+                    colorScheme="red"
+                    style={{ position: "absolute", top: '20vh' }}
+                >
+                    {images[index]?.imagekey}
+                </Button>
+                <ChakraImage
+                    onDoubleClick={onOpen}
+                    src={`data:image/jpeg;base64,${datas.current[index]}`}
+                    fallbackSrc={FallbackImage}
+                    pointerEvents={"all"}
+                    w={'100%'}
+                />
+                <Modal isOpen={isOpen} onClose={onClose} size={"full"}>
+                    <ModalOverlay />
+                    <ModalContent color={"blue.500"} bgColor={"blackAlpha.800"}>
+                        <ModalCloseButton size={"lg"} mr={"27px"} />
+                        <ModalHeader>
+                            Series
+                        </ModalHeader>
+                        <ModalBody>
+                            {/* <DicomImageReader seriesinsuid={seriesinsuid} images={images} /> */}
+                            <DicomImageReaderOld seriesinsuid={seriesinsuid} images={images} />
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button onClick={onClose} colorScheme="blue" variant={"ghost"}>Close</Button>
+                        </ModalFooter>
+                    </ModalContent>
+                </Modal>
+            </Skeleton>
         </>
     );
 }

@@ -30,7 +30,7 @@ interface IImageViewerProps {
 
 export default function ImageViewer({ study, series }: IImageViewerProps) {
     const [summary, setSummary] = useState<IImageSummaryProps>();
-    const fetchSummay = async () => {
+    const fetchSummary = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_MYPACS_SERVER}/v1/api/pacs/images/${series.seriesinsuid}`, { method: "POST" });
             const json = await response.json();
@@ -40,14 +40,20 @@ export default function ImageViewer({ study, series }: IImageViewerProps) {
         }
     }
     useEffect(() => {
-        fetchSummay();
+        fetchSummary();
     }, []);
 
     return (
         <>
             <Stack overflow={"hidden"} h={'100%'} position={"relative"} alignItems={"center"} justifyContent={"center"} >
                 <DicomImage seriesinsuid={series.seriesinsuid} />
-                <Box w={'100%'} h={'100%'} position={"absolute"} pointerEvents={"none"}>
+                <Box
+                    w={'100%'}
+                    h={'100%'}
+                    position={"absolute"}
+                    pointerEvents={"none"}
+                    padding={'15px 17px 15px 15px'}
+                >
                     <Stack h={'100%'} justifyContent={"space-between"} >
                         <HStack justifyContent={"space-between"} alignItems={"flex-start"}>
                             <Box>
@@ -55,7 +61,6 @@ export default function ImageViewer({ study, series }: IImageViewerProps) {
                                 <Text>{study.pname}</Text>
                                 <Text>{study.pbirthdatetime}</Text>
                                 <Text>{series.seriesnum}</Text>
-                                <Text>{/* {image.imagekey}<br /> */}</Text>
                                 <Text>{series.seriesdate}</Text>
                                 <Text>{series.seriestime}</Text>
                             </Box>

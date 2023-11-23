@@ -84,7 +84,6 @@ export default function SeriesViewer({ study }: IDicomViewerModalProps) {
                                 h={width}
                                 color={"whitesmoke"}
                                 bgColor={"blackAlpha.900"}
-                                padding={'15px 17px 15px 15px'}
                             >
                                 <ImageViewer study={study} series={series} />
                             </Box>
