@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IDicomImageReaderProps } from "./DicomImageRender";
-import { Box } from "@chakra-ui/react";
+import { Box, CircularProgress, CircularProgressLabel, Skeleton } from "@chakra-ui/react";
 import cornerstone from 'cornerstone-core';
 import cornerstoneTools from 'cornerstone-tools';
 import cornerstoneMath from 'cornerstone-math';
@@ -41,6 +41,10 @@ cornerstoneWADOImageLoader.webWorkerManager.initialize({
 
 export default function DicomImageReaderOld({ seriesinsuid, images }: IDicomImageReaderProps) {
 
+    const counting = useRef<NodeJS.Timeout>();
+    const [count, setCount] = useState(0);
+
+    const [isReady, setIsReady] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const [imageIds, setImageIds] = useState<(string | null)[]>([]);
 
@@ -73,17 +77,60 @@ export default function DicomImageReaderOld({ seriesinsuid, images }: IDicomImag
         if (!isLoaded) {
             fetchData();
         }
-
-        // console.log('imageIds : ', imageIds);
-        // console.log('isLoaded : ', isLoaded);
-
     }, [isLoaded]);
+
+    useEffect(() => {
+        if (count === 0) {
+            counting.current = setInterval(() => {
+                setCount(prevCount => (prevCount + 1));
+            }, 330);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (count === images.length) {
+            clearInterval(counting.current);
+
+            let num = 3;
+            let out = setInterval(() => {
+                num = num - 1;
+
+                if (num === 0) {
+                    clearInterval(out);
+                    setIsReady(true);
+                }
+            }, 330);
+        }
+    }, [count])
 
     return (
         <>
             <Box id="content">
                 {/* https://react.dev/learn/conditional-rendering#logical-and-operator- */}
-                {isLoaded && <Viewport ids={imageIds} />}
+                {!isReady &&
+                    <CircularProgress
+                        isIndeterminate
+                        color='blue.400'
+                        zIndex={1}
+                        position={'absolute'}
+                        left={'44vw'}
+                        top={'44vh'}
+                        size={'100px'}
+                        fontSize={'75px'}
+                    >
+                        <CircularProgressLabel>{Math.floor(count / images.length * 100)}%</CircularProgressLabel>
+                    </CircularProgress>
+                }
+                <Skeleton
+                    isLoaded={isReady}
+                    w={'80vh'}
+                    h={'80vh'}
+                    margin={'auto'}
+                    startColor={'blue.500'}
+                    endColor={'blue.900'}
+                >
+                    {isLoaded && <Viewport ids={imageIds} />}
+                </Skeleton>
             </Box>
         </>
     );
