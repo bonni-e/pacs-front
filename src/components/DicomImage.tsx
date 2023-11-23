@@ -15,7 +15,8 @@ import FallbackImage from "../static/images/fallbackimg.jpg";
 import { useEffect, useRef, useState } from "react";
 import DicomImageReader from "./DicomImageRender";
 import DicomImageReaderOld from "./DicomImageRenderOld";
-import { inherits } from "util";
+import CursorPan from '../static/images/switch_right_FILL0_wght400_GRAD0_opsz24.png';
+
 
 export interface IImageProps {
     "path": string;
@@ -103,7 +104,7 @@ export default function DicomImage({ seriesinsuid }: IDicomImageProps) {
                     fallbackSrc={FallbackImage}
                     pointerEvents={"all"}
                     w={'100%'}
-                    cursor={`cell`}
+                    cursor={`url(${CursorPan}), auto`}
                 />
                 <Modal isOpen={isOpen} onClose={onClose} size={"full"}>
                     <ModalOverlay />
