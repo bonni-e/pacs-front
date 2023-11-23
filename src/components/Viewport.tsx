@@ -38,11 +38,6 @@ export default function Viewport({ ids }: IViewportProps) {
         <CornerstoneViewport
             tools={state.current.tools}
             imageIds={state.current.imageIds}
-            style={{
-                width: '80vh',
-                height: '80vh',
-                margin: 'auto',
-                border: 'solid 1px, whitesmoke'
-            }} />
+        />
     );
 }
