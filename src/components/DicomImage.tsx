@@ -44,10 +44,10 @@ export default function DicomImage({ seriesinsuid }: IDicomImageProps) {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const [storagePath, setStoragePath] = useState('');
+    const datas = useRef<string[]>([]);
+
     const [isLoaded, setIsLoaded] = useState(false);
     const [images, setImages] = useState<Array<IImageProps>>([]);
-    const datas = useRef<string[]>([]);
     const [index, setIndex] = useState(0);
 
     const fetchImages = async () => {
@@ -56,7 +56,6 @@ export default function DicomImage({ seriesinsuid }: IDicomImageProps) {
         try {
             const response = await fetch(`${apiUrl}/v1/api/pacs/images/${seriesinsuid}`);
             const json = await (response.json());
-            setStoragePath(json.osServiceStorageRoot);
             setImages(json.list);
             datas.current = json.listDicomBase64;
             setIsLoaded(true);
@@ -64,6 +63,7 @@ export default function DicomImage({ seriesinsuid }: IDicomImageProps) {
             console.log(error);
         }
     }
+
     useEffect(() => {
         fetchImages();
     }, []);
@@ -103,6 +103,7 @@ export default function DicomImage({ seriesinsuid }: IDicomImageProps) {
                     fallbackSrc={FallbackImage}
                     pointerEvents={"all"}
                     w={'100%'}
+                    cursor={`cell`}
                 />
                 <Modal isOpen={isOpen} onClose={onClose} size={"full"}>
                     <ModalOverlay />
