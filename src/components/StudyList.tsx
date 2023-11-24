@@ -17,18 +17,29 @@ import StudyPreviousModal from './StudyPreviousModal';
 let pageSize = 5;
 
 export interface IStudyProps {
+    "aiModuleName": string;
+    "pid": string;
+    "pname": string;
+    "aiScore": number;
+    "studykey": number;
+    "pbirthdatetime": string;
+    "verifyflag": number;
+    "patientkey": number;
+    "reportstatus": number;
     "modality": string;
     "imagecnt": number;
     "studydate": string;
     "studydesc": string;
-    "reportstatus": number;
     "seriescnt": number;
-    "verifyflag": number;
-    "studykey": number;
-    "patientkey": string;
-    "pid": string;
-    "pname": string;
-    "pbirthdatetime": string;
+    "aiCompany": string;
+    "aiUpdated": string;
+    "aiPriority": number;
+    "aiNumberOfFindings": number;
+    "aiAbnormalYn": string;
+    "aiFindings": string;
+    "aiReport": string;
+    "aiVersion": string;
+    "aiResultCode": string;
 }
 
 interface IStudyList {
