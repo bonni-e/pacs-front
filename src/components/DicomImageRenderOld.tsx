@@ -57,8 +57,15 @@ export default function DicomImageReaderOld({ seriesinsuid, images }: IDicomImag
             const buffer = await response.arrayBuffer();
             const imageId = `dicomweb:${await URL.createObjectURL(new Blob([buffer], { type: 'application/dicom' }))}`;
             // console.warn('imageId : ', imageId);
-            return imageId;
 
+            const transferSyntaxUID = images.filter(image => image.sopinstanceuid === sopinstanceuid).map(image => image.transfersyntaxuid);
+            const dataSet = dicomParser.parseDicom(new Uint8Array(buffer), { TransferSyntaxUID: transferSyntaxUID[0] });
+            const sttudyTime = dataSet.floatString('x00080030');
+
+            return {
+                imageId : imageId,
+                studyTime: sttudyTime
+            };
         } catch (error) {
             console.error('Error fetching image:', error);
             return null;
@@ -70,7 +77,16 @@ export default function DicomImageReaderOld({ seriesinsuid, images }: IDicomImag
             try {
                 const imageIdPromises = images.map((image) => fetchImage(image.sopinstanceuid));
                 const resolvedImageIds = await Promise.all(imageIdPromises.filter(id => id !== null));
-                setImageIds([...resolvedImageIds]);
+
+                // sort
+                resolvedImageIds.sort((a, b) => {
+                    const timeA = a?.studyTime ?? 0;
+                    const timeB = b?.studyTime ?? 0;
+                    return timeA - timeB;
+                })
+
+                const list = await Promise.all(resolvedImageIds.map((obj) => obj?.imageId));
+                setImageIds([...list] as string[]);
                 setIsLoaded(true);
             } catch (error) {
                 console.error('Error fetching images:', error);
@@ -104,13 +120,15 @@ export default function DicomImageReaderOld({ seriesinsuid, images }: IDicomImag
                 }
             }, 330);
         }
-    }, [count])
+    }, [count]);
 
     function handleCursorWindow() {
         document.body.style.cursor = `url(${CursorWindow}), auto`;
     }
 
     function handleCursorZoom(event: React.MouseEvent) {
+        // console.log('event.button : ', event.button);
+
         if (event.button === 1) {
             document.body.style.cursor = `url(${CursorGrab}), auto`;
         } else if (event.button === 2) {
