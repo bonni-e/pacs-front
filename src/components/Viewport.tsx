@@ -22,12 +22,12 @@ export default function Viewport({ ids }: IViewportProps) {
 
     const [activeTool, setActiveTool] = useState('Wwwc');
     const [color, setColor] = useState({
-        Wwwc: blue,
-        Zoom: green,
-        Bidirectional: green,
-        Pan: green,
-        PrevNext: green,
-        Eraser: green,
+        Wwwc: green,
+        Zoom: blue,
+        Bidirectional: blue,
+        Pan: blue,
+        PrevNext: blue,
+        Eraser: blue,
     });
     const state = useRef({
         tools: [
@@ -74,8 +74,8 @@ export default function Viewport({ ids }: IViewportProps) {
         setColor(prevColor => {
             return {
                 ...prevColor,
-                [activeTool]: green,
-                [toolName]: blue
+                [activeTool]: blue,
+                [toolName]: green
             }
         });
         setActiveTool(toolName);
@@ -162,6 +162,7 @@ export default function Viewport({ ids }: IViewportProps) {
                 tools={state.current.tools}
                 imageIds={state.current.imageIds}
                 activeTool={activeTool}
+                style={{ border: `solid 1px ${blue}` }}
             />
         </Box>
     );
