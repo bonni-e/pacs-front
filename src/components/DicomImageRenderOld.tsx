@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { IDicomImageReaderProps } from "./DicomImageRender";
-import { Box, CircularProgress, CircularProgressLabel, Skeleton } from "@chakra-ui/react";
+import { CircularProgress, CircularProgressLabel, Skeleton } from "@chakra-ui/react";
 import cornerstone from 'cornerstone-core';
 import cornerstoneTools from 'cornerstone-tools';
 import cornerstoneMath from 'cornerstone-math';
@@ -8,9 +8,6 @@ import Hammer from 'hammerjs';
 import cornerstoneWADOImageLoader from 'cornerstone-wado-image-loader';
 import dicomParser from 'dicom-parser';
 import Viewport from "./Viewport";
-import CursorWindow from '../static/images/brightness_6_FILL0_wght400_GRAD0_opsz24.png';
-import CursorZoom from '../static/images/zoom_in_FILL0_wght400_GRAD0_opsz24.png';
-import CursorGrab from '../static/images/hand_bones_FILL0_wght400_GRAD0_opsz24.png';
 
 cornerstoneTools.external.cornerstone = cornerstone;
 cornerstoneTools.external.Hammer = Hammer;
@@ -63,7 +60,7 @@ export default function DicomImageReaderOld({ seriesinsuid, images }: IDicomImag
             const sttudyTime = dataSet.floatString('x00080030');
 
             return {
-                imageId : imageId,
+                imageId: imageId,
                 studyTime: sttudyTime
             };
         } catch (error) {
@@ -122,62 +119,33 @@ export default function DicomImageReaderOld({ seriesinsuid, images }: IDicomImag
         }
     }, [count]);
 
-    function handleCursorWindow() {
-        document.body.style.cursor = `url(${CursorWindow}), auto`;
-    }
-
-    function handleCursorZoom(event: React.MouseEvent) {
-        // console.log('event.button : ', event.button);
-
-        if (event.button === 1) {
-            document.body.style.cursor = `url(${CursorGrab}), auto`;
-        } else if (event.button === 2) {
-            document.body.style.cursor = `url(${CursorZoom}), auto`;
-        }
-    }
-
-    function hadleCursorNone() {
-        document.body.style.cursor = `auto`;
-    }
-
     return (
         <>
-            <Box
-                id="content"
-                onMouseEnter={handleCursorWindow}
-                onMouseLeave={hadleCursorNone}
-                onMouseDown={handleCursorZoom}
-                onMouseUp={handleCursorWindow}
+            {/* https://react.dev/learn/conditional-rendering#logical-and-operator- */}
+            {!isReady &&
+                <CircularProgress
+                    isIndeterminate
+                    color='blue.400'
+                    zIndex={1}
+                    position={'absolute'}
+                    left={'44vw'}
+                    top={'44vh'}
+                    size={'100px'}
+                    fontSize={'75px'}
+                >
+                    <CircularProgressLabel>{Math.floor(count / images.length * 100)}%</CircularProgressLabel>
+                </CircularProgress>
+            }
+            <Skeleton
+                isLoaded={isReady}
                 w={'80vh'}
                 h={'80vh'}
                 margin={'auto'}
+                startColor={'blue.500'}
+                endColor={'blue.900'}
             >
-                {/* https://react.dev/learn/conditional-rendering#logical-and-operator- */}
-                {!isReady &&
-                    <CircularProgress
-                        isIndeterminate
-                        color='blue.400'
-                        zIndex={1}
-                        position={'absolute'}
-                        left={'44vw'}
-                        top={'44vh'}
-                        size={'100px'}
-                        fontSize={'75px'}
-                    >
-                        <CircularProgressLabel>{Math.floor(count / images.length * 100)}%</CircularProgressLabel>
-                    </CircularProgress>
-                }
-                <Skeleton
-                    isLoaded={isReady}
-                    w={'80vh'}
-                    h={'80vh'}
-                    margin={'auto'}
-                    startColor={'blue.500'}
-                    endColor={'blue.900'}
-                >
-                    {isLoaded && <Viewport ids={imageIds} />}
-                </Skeleton>
-            </Box>
+                {isLoaded && <Viewport ids={imageIds} />}
+            </Skeleton>
         </>
     );
 }

@@ -11,22 +11,12 @@ import {
     ModalOverlay,
     Skeleton,
     Text,
-    HStack,
-    Image,
-    Link,
 } from "@chakra-ui/react";
 import FallbackImage from "../static/images/fallbackimg.jpg";
 import { useEffect, useRef, useState } from "react";
 import DicomImageReader from "./DicomImageRender";
 import DicomImageReaderOld from "./DicomImageRenderOld";
 import CursorPan from '../static/images/switch_right_FILL0_wght400_GRAD0_opsz24.png';
-import Left from '../static/images/left.png';
-import Right from '../static/images/right.png';
-import Both from '../static/images/both.png';
-import Wheel from '../static/images/wheel.png';
-import Scroll from '../static/images/scroll.png';
-import { BsFillEraserFill } from "react-icons/bs";
-import cornerstoneTools from "cornerstone-tools";
 
 export interface IImageProps {
     "path": string;
@@ -93,12 +83,6 @@ export default function DicomImage({ seriesinsuid }: IDicomImageProps) {
         });
     }, [index])
 
-    function eraseAnnotations() {
-        console.log('erase annotations');
-        console.log(cornerstoneTools);
-        // cornerstoneTools.
-    }
-
     return (
         <>
             <Skeleton
@@ -131,22 +115,6 @@ export default function DicomImage({ seriesinsuid }: IDicomImageProps) {
                             <Text fontSize={"medium"} color={'RGBA(255,255,255,0.3)'}>{seriesinsuid}</Text>
                         </ModalHeader>
                         <ModalBody>
-                            <HStack justifyContent={'center'} color={'RGBA(0, 255, 0, 1)'} mb={'15px'} textAlign={'center'}>
-                                <Image src={Left} w={'11px'} />
-                                <Text mr={'5px'}>Window Level</Text>
-                                <Image src={Right} w={'11px'} />
-                                <Text mr={'5px'}>Zoom</Text>
-                                <Image src={Both} w={'11px'} />
-                                <Text mr={'5px'}>Bidirectional</Text>
-                                <Image src={Wheel} w={'11px'} />
-                                <Text mr={'5px'}>Move</Text>
-                                <Image src={Scroll} w={'11px'} />
-                                <Text mr={'5px'}>Prev/Next</Text>
-                                <BsFillEraserFill color={'RGBA(0, 255, 255, 1)'} />
-                                <Link onClick={eraseAnnotations}>
-                                    <Text mr={'5px'} color={'RGBA(0, 255, 255, 1)'}>Erase</Text>
-                                </Link>
-                            </HStack>
                             {/* <DicomImageReader seriesinsuid={seriesinsuid} images={images} /> */}
                             <DicomImageReaderOld seriesinsuid={seriesinsuid} images={images} />
                         </ModalBody>

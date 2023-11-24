@@ -37,6 +37,7 @@ export default function SeriesViewer({ study }: IDicomViewerModalProps) {
 
     const [width, setWidth] = useState("40vh");
     const [series, setSeries] = useState([]);
+
     const fetchSeries = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_MYPACS_SERVER}/v1/api/pacs/series/${study.studykey}`);
@@ -46,6 +47,7 @@ export default function SeriesViewer({ study }: IDicomViewerModalProps) {
             console.log(error);
         }
     }
+
     useEffect(() => {
         fetchSeries();
     }, []);
