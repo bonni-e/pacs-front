@@ -9,13 +9,9 @@ import {
     TableContainer,
     Checkbox,
     CheckboxGroup,
-    Tfoot,
     Text,
 } from '@chakra-ui/react'
 import StudyPreviousModal from './StudyPreviousModal';
-
-
-let pageSize = 5;
 
 export interface IStudyProps {
     "aiModuleName": string;
