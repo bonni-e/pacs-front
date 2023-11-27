@@ -71,6 +71,7 @@ export default function StudyList({ studies }: IStudyList) {
                             <Th color='white'>검사 장비</Th>
                             <Th color='white'>검사 설명</Th>
                             <Th color='white'>검사 일시</Th>
+                            <Th color='white'>AI Vender</Th>
                             <Th color='white'>위험 지수</Th>
                             <Th color='white'>판독 상태</Th>
                             <Th color='white'>시리즈</Th>
@@ -87,10 +88,12 @@ export default function StudyList({ studies }: IStudyList) {
                                     <Td>{study.modality}</Td>
                                     <Td>{study.studydesc}</Td>
                                     <Td>{study.studydate}</Td>
+                                    <Td>{study.aiCompany}</Td>
                                     <Td>
                                         <Text
                                             textAlign={'center'}
-                                            backgroundColor={color[study.aiPriority - 1]}>
+                                            backgroundColor=
+                                            {study.aiPriority !== null ? color[study.aiPriority - 1] : (study.aiScore === 100 ? color[1] : color[Math.ceil(10 - study.aiScore / 10) - 1])}>
                                             {study.aiScore === null ? 0 : study.aiScore}
                                         </Text>
                                     </Td>
