@@ -10,6 +10,7 @@ import {
     Checkbox,
     CheckboxGroup,
     Tfoot,
+    Text,
 } from '@chakra-ui/react'
 import StudyPreviousModal from './StudyPreviousModal';
 
@@ -46,7 +47,18 @@ interface IStudyList {
     "studies": Array<IStudyProps>
 }
 
-export default function StudyList({studies} : IStudyList) {
+export default function StudyList({ studies }: IStudyList) {
+
+    const color = [
+        "#FF0000",
+        "#C0504D",
+        "#E46C0A",
+        "#FAC090",
+        "#FFFF00",
+        "#0000FF",
+        "#7FFF00",
+    ];
+
     return (
         <>
             <TableContainer padding={'23px'}>
@@ -59,6 +71,7 @@ export default function StudyList({studies} : IStudyList) {
                             <Th color='white'>검사 장비</Th>
                             <Th color='white'>검사 설명</Th>
                             <Th color='white'>검사 일시</Th>
+                            <Th color='white'>위험 지수</Th>
                             <Th color='white'>판독 상태</Th>
                             <Th color='white'>시리즈</Th>
                             <Th color='white'>이미지</Th>
@@ -74,6 +87,13 @@ export default function StudyList({studies} : IStudyList) {
                                     <Td>{study.modality}</Td>
                                     <Td>{study.studydesc}</Td>
                                     <Td>{study.studydate}</Td>
+                                    <Td>
+                                        <Text
+                                            textAlign={'center'}
+                                            backgroundColor={color[study.aiPriority - 1]}>
+                                            {study.aiScore === null ? 0 : study.aiScore}
+                                        </Text>
+                                    </Td>
                                     <Td>{toStringReportStatus(study.reportstatus)}</Td>
                                     <Td>{study.seriescnt}</Td>
                                     <Td>{study.imagecnt}</Td>
