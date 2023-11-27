@@ -66,37 +66,39 @@ export default function StudyList({ studies }: IStudyList) {
                             <Th color='white'>환자 이름</Th>
                             <Th color='white'>검사 장비</Th>
                             <Th color='white'>검사 설명</Th>
-                            <Th color='white'>검사 일시</Th>
-                            <Th color='white'>AI Vender</Th>
-                            <Th color='white'>위험 지수</Th>
-                            <Th color='white'>판독 상태</Th>
-                            <Th color='white'>시리즈</Th>
-                            <Th color='white'>이미지</Th>
-                            <Th color='white'>Verify</Th>
+                            <Th color='white' textAlign={'center'}>검사 일시</Th>
+                            <Th color='white' textAlign={'center'}>AI Vender</Th>
+                            <Th color='white' textAlign={'center'}>위험 지수</Th>
+                            <Th color='white' textAlign={'center'}>판독 상태</Th>
+                            <Th color='white' textAlign={'center'}>시리즈</Th>
+                            <Th color='white' textAlign={'center'}>이미지</Th>
+                            <Th color='white' textAlign={'center'}>Verify</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
                         <CheckboxGroup>
                             {studies.map((study: IStudyProps) => (
-                                <Tr key={study.studykey}>
+                                <Tr key={study.studykey} _hover={{ backgroundColor: 'RGBA(0,0,0,0.1)' }}>
                                     <Td><Checkbox value={(study.studykey).toString()} />{study.pid}</Td>
                                     <Td><StudyPreviousModal pid={study.pid} pname={study.pname} /></Td>
                                     <Td>{study.modality}</Td>
                                     <Td>{study.studydesc}</Td>
-                                    <Td>{study.studydate}</Td>
-                                    <Td>{study.aiCompany}</Td>
+                                    <Td textAlign={'center'}>{study.studydate}</Td>
+                                    <Td textAlign={'center'}>{study.aiCompany}</Td>
                                     <Td>
                                         <Text
                                             textAlign={'center'}
                                             backgroundColor=
-                                            {study.aiPriority !== null ? color[study.aiPriority - 1] : (study.aiScore === 100 ? color[1] : color[Math.ceil(10 - study.aiScore / 10) - 1])}>
+                                            {study.aiPriority !== null ? color[study.aiPriority - 1] : (study.aiScore === 100 ? color[1] : color[Math.ceil(10 - study.aiScore / 10) - 1])}
+                                            color={study.aiScore >= 80 ? 'white' : 'black'}
+                                        >
                                             {study.aiScore === null ? 0 : study.aiScore}
                                         </Text>
                                     </Td>
-                                    <Td>{toStringReportStatus(study.reportstatus)}</Td>
-                                    <Td>{study.seriescnt}</Td>
-                                    <Td>{study.imagecnt}</Td>
-                                    <Td>{study.verifyflag}</Td>
+                                    <Td textAlign={'center'}>{toStringReportStatus(study.reportstatus)}</Td>
+                                    <Td textAlign={'center'}>{study.seriescnt}</Td>
+                                    <Td textAlign={'center'}>{study.imagecnt}</Td>
+                                    <Td textAlign={'center'}>{study.verifyflag}</Td>
                                 </Tr>
                             ))}
                         </CheckboxGroup>
